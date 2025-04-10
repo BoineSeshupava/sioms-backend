@@ -21,7 +21,11 @@ namespace SIOMS.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SIOMSDbContext).Assembly);
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Product>()
+                        .Property(p => p.Price)
+                        .HasPrecision(18, 2);
         }
     }
 }

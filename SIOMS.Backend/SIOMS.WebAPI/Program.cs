@@ -2,6 +2,8 @@ using SIOMS.Infrastructure;
 using SIOMS.Application.Interfaces;
 using SIOMS.Application.Profiles;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using SIOMS.Infrastructure.Persistence;
 
 
 var builder = WebApplication.CreateBuilder(args);
