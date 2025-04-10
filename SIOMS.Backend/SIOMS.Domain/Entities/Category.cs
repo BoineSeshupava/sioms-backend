@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace SIOMS.Domain.Entities
 {
-    public class Employee
+    public class Category
     {
         public Guid Id { get; set; }
-        public string EmployeeCode { get; set; }
         public string Name { get; set; }
-        public string Department { get; set; }
-        public DateTime DateOfJoining { get; set; }
+
+        // One Category has Many Products
+        public ICollection<Product> Products { get; set; }
     }
 }

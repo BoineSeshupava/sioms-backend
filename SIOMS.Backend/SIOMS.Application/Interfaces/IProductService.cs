@@ -10,9 +10,9 @@ namespace SIOMS.Application.Interfaces
     public interface IProductService
     {
         Task<IEnumerable<ProductDto>> GetAllProductsAsync();
-        Task<ProductDto> GetProductByIdAsync(int id);
-        Task<int> AddProductAsync(ProductDto productDto);
-        Task<bool> UpdateProductAsync(ProductDto productDto);
-        Task<bool> DeleteProductAsync(int id);
+        Task<ProductDto> GetProductByIdAsync(Guid id);
+        Task<ProductDto> AddProductAsync(ProductDto productDto);
+        Task UpdateProductAsync(ProductDto productDto);
+        Task DeleteProductAsync(Guid id);
     }
 }

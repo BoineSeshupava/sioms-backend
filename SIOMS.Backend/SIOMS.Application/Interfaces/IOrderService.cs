@@ -10,9 +10,9 @@ namespace SIOMS.Application.Interfaces
     public interface IOrderService
     {
         Task<IEnumerable<OrderDto>> GetAllOrdersAsync();
-        Task<OrderDto> GetOrderByIdAsync(int id);
-        Task<int> AddOrderAsync(OrderDto orderDto);
-        Task<bool> UpdateOrderAsync(OrderDto orderDto);
-        Task<bool> DeleteOrderAsync(int id);
+        Task<OrderDto> GetOrderByIdAsync(Guid id);
+        Task<OrderDto> AddOrderAsync(OrderDto orderDto);
+        Task UpdateOrderAsync(OrderDto orderDto);
+        Task DeleteOrderAsync(Guid id);
     }
 }

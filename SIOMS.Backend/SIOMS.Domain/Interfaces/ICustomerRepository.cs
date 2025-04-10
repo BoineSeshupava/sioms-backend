@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace SIOMS.Domain.Interfaces
 {
-    public interface IProductRepository : IGenericRepository<Product> 
+    public interface ICustomerRepository : IGenericRepository<Customer>
     {
-        Task<Product> GetProductWithCategoryAsync(Guid productId);
     }
 }

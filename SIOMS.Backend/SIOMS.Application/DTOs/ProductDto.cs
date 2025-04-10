@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SIOMS.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,14 @@ namespace SIOMS.Application.DTOs
 {
     public class ProductDto
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string ProductName { get; set; }
         public string ProductCode { get; set; }
         public int StockQuantity { get; set; }
         public decimal Price { get; set; }
+        public Guid CategoryId { get; set; }
+
+        // Navigation Property
+        public Category Category { get; set; }
     }
 }

@@ -1,0 +1,27 @@
+﻿using Microsoft.EntityFrameworkCore;
+using SIOMS.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SIOMS.Infrastructure.Persistence
+{
+    public class SIOMSDbContext : DbContext
+    {
+        public SIOMSDbContext(DbContextOptions<SIOMSDbContext> options) : base(options)
+        {
+        }
+
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SIOMSDbContext).Assembly);
+        }
+    }
+}

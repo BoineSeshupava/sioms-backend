@@ -17,6 +17,7 @@ namespace SIOMS.Application.Profiles
             CreateMap<Site, SiteDto>().ReverseMap();
             CreateMap<Product, ProductDto>().ReverseMap();
             CreateMap<Order, OrderDto>().ReverseMap();
+            CreateMap<Category, CategoryDto>().ReverseMap();
         }
     }
 }

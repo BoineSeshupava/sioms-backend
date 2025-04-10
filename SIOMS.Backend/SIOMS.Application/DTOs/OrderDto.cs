@@ -8,9 +8,10 @@ namespace SIOMS.Application.DTOs
 {
     public class OrderDto
     {
-        public int Id { get; set; }
-        public string OrderNumber { get; set; }
+        public Guid Id { get; set; }
         public DateTime OrderDate { get; set; }
         public decimal TotalAmount { get; set; }
+        public Guid ProductId { get; set; }
+        public int Quantity { get; set; }
     }
 }

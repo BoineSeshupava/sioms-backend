@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace SIOMS.Domain.Interfaces
 {
-    public interface IOrderRepository
+    public interface IOrderRepository : IGenericRepository<Order>
     {
-        Task<IEnumerable<Order>> GetAllOrdersAsync();
-        Task<Order> GetOrderByIdAsync(int id);
-        Task<int> AddOrderAsync(Order order);
-        Task<bool> UpdateOrderAsync(Order order);
-        Task<bool> DeleteOrderAsync(int id);
+        Task<Order> GetOrderWithDetailsAsync(Guid orderId);
     }
 }
