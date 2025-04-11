@@ -4,6 +4,7 @@ using SIOMS.Application.Profiles;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SIOMS.Infrastructure.Persistence;
+using SIOMS.Infrastructure.Data;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,11 +18,24 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "SIOMS Web API",
+        Version = "v1",
+        Description = "Sales Inventory Order Management System API"
+    });
+});
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<SIOMSDbContext>();
+    context.Database.Migrate();
+    SeedData.SeedDatabase(context);
+}
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SIOMS.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using SIOMS.Infrastructure.Persistence;
 namespace SIOMS.Infrastructure.Migrations
 {
     [DbContext(typeof(SIOMSDbContext))]
-    partial class SIOMSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250411045049_SeedData")]
+    partial class SeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
