@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SIOMS.Application.DTOs;
 using SIOMS.Application.Interfaces;
@@ -33,6 +34,7 @@ namespace SIOMS.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Add(CategoryDto categoryDto)
         {
             await _categoryService.AddCategoryAsync(categoryDto);
