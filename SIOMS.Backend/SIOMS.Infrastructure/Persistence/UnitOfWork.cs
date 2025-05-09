@@ -15,12 +15,14 @@ namespace SIOMS.Infrastructure.Persistence
         public ICategoryRepository Categories { get; }
         public IOrderRepository Orders { get; }
         public ICustomerRepository Customers { get; }
+        public ICartItemRepository CartItems { get; }
 
         public UnitOfWork(SIOMSDbContext context,
             IProductRepository products,
             ICategoryRepository categories,
             IOrderRepository orders,
-            ICustomerRepository customers
+            ICustomerRepository customers,
+            ICartItemRepository cartItems
             )
         {
             _context = context;
@@ -28,6 +30,7 @@ namespace SIOMS.Infrastructure.Persistence
             Categories = categories;
             Orders = orders;
             Customers = customers;
+            CartItems = cartItems;
         }
 
         public async Task CommitAsync()

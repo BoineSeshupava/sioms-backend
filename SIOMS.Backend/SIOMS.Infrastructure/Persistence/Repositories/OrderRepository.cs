@@ -20,7 +20,7 @@ namespace SIOMS.Infrastructure.Persistence.Repositories
             return await _context.Orders
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Product)
-                .FirstOrDefaultAsync(o => o.Id == orderId);
+                .FirstOrDefaultAsync(o => o.OrderId == orderId);
         }
     }
 }

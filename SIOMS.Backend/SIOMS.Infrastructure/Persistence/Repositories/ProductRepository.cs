@@ -21,7 +21,7 @@ namespace SIOMS.Infrastructure.Persistence.Repositories
         {
             return await _context.Products
                 .Include(x => x.Category)
-                .FirstOrDefaultAsync(x => x.Id == productId);
+                .FirstOrDefaultAsync(x => x.ProductId == productId);
         }
     }
 }

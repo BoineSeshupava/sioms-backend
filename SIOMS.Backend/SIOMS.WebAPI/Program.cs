@@ -76,6 +76,13 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp",
+        builder => builder.WithOrigins("http://localhost:4200")
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -103,6 +110,7 @@ app.Map("/error", (HttpContext context) =>
 {
     return Results.Problem("Unexpected error occurred. Please contact support.");
 });
+app.UseCors("AllowAngularApp");
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();

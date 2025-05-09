@@ -24,6 +24,7 @@ namespace SIOMS.Infrastructure
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ICartItemRepository, CartItemRepository>();
 
             return services;
         }

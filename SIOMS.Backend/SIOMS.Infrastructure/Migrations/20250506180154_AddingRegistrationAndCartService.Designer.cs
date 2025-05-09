@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SIOMS.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using SIOMS.Infrastructure.Persistence;
 namespace SIOMS.Infrastructure.Migrations
 {
     [DbContext(typeof(SIOMSDbContext))]
-    partial class SIOMSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250506180154_AddingRegistrationAndCartService")]
+    partial class AddingRegistrationAndCartService
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,34 +27,34 @@ namespace SIOMS.Infrastructure.Migrations
 
             modelBuilder.Entity("Role", b =>
                 {
-                    b.Property<Guid>("RoleId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("RoleName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("RoleId");
+                    b.HasKey("Id");
 
                     b.ToTable("Roles");
 
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            RoleName = "Admin"
+                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
+                            Name = "Admin"
                         },
                         new
                         {
-                            RoleId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            RoleName = "Customer"
+                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
+                            Name = "Customer"
                         });
                 });
 
             modelBuilder.Entity("SIOMS.Domain.Entities.CartItem", b =>
                 {
-                    b.Property<Guid>("CartItemId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -64,7 +67,7 @@ namespace SIOMS.Infrastructure.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("CartItemId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
@@ -75,7 +78,7 @@ namespace SIOMS.Infrastructure.Migrations
 
             modelBuilder.Entity("SIOMS.Domain.Entities.Category", b =>
                 {
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -83,14 +86,14 @@ namespace SIOMS.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CategoryId");
+                    b.HasKey("Id");
 
                     b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("SIOMS.Domain.Entities.Customer", b =>
                 {
-                    b.Property<Guid>("CustomerId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -110,7 +113,7 @@ namespace SIOMS.Infrastructure.Migrations
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("CustomerId");
+                    b.HasKey("Id");
 
                     b.HasIndex("RoleId");
 
@@ -119,7 +122,7 @@ namespace SIOMS.Infrastructure.Migrations
 
             modelBuilder.Entity("SIOMS.Domain.Entities.Order", b =>
                 {
-                    b.Property<Guid>("OrderId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -129,7 +132,7 @@ namespace SIOMS.Infrastructure.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("OrderId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
@@ -138,7 +141,7 @@ namespace SIOMS.Infrastructure.Migrations
 
             modelBuilder.Entity("SIOMS.Domain.Entities.OrderItem", b =>
                 {
-                    b.Property<Guid>("OrderItemId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -151,7 +154,7 @@ namespace SIOMS.Infrastructure.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("OrderItemId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
@@ -162,7 +165,7 @@ namespace SIOMS.Infrastructure.Migrations
 
             modelBuilder.Entity("SIOMS.Domain.Entities.Product", b =>
                 {
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -189,7 +192,7 @@ namespace SIOMS.Infrastructure.Migrations
                     b.Property<int>("StockQuantity")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 

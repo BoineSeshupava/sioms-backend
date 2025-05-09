@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using SIOMS.Application.DTOs;
 using SIOMS.Application.Interfaces;
 
 namespace SIOMS.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
@@ -17,15 +18,25 @@ namespace SIOMS.WebAPI.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
         {
             var token = await _authService.LoginAsync(request.Email, request.Password);
-            return Ok(new { Token = token });
+            return Ok(new { token });
         }
-        public class LoginRequest
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
         {
-            public string Email { get; set; }
-            public string Password { get; set; }
+            try
+            {
+                await _authService.RegisterAsync(request.Name, request.Email, request.Password);
+            return Ok(new { message = "Registration successful" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
         }
     }
+
 }

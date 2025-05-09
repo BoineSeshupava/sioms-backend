@@ -12,6 +12,7 @@ namespace SIOMS.Domain.Interfaces
         IProductRepository Products { get; }
         ICustomerRepository Customers { get; }
         IOrderRepository Orders { get; }
+        ICartItemRepository CartItems { get; }
         Task CommitAsync();
     }
 }
