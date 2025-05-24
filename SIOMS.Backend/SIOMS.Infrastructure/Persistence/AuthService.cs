@@ -54,7 +54,9 @@ public class AuthService : IAuthService
 
     public async Task RegisterAsync(string name, string email, string password)
     {
-        if (_context.Customers.Any(c => c.Email == email))
+        try
+        {
+            if (_context.Customers.Any(c => c.Email == email))
             throw new Exception("Email already registered");
 
         var role = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Customer");
@@ -69,10 +71,15 @@ public class AuthService : IAuthService
             Name = name,
             Email = email,
             Password = hashedPassword,
-            RoleId = role.RoleId,
+            RoleId = role.RoleId
         };
 
         await _context.Customers.AddAsync(customer);
         await _context.SaveChangesAsync();
+        }
+        catch(Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
     }
 }

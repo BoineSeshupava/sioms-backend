@@ -9,7 +9,7 @@ namespace SIOMS.Application.DTOs
 {
     public class ProductDto
     {
-        public Guid Id { get; set; }
+        public Guid ProductId { get; set; }
         public string ProductName { get; set; }
         public string ProductCode { get; set; }
 
