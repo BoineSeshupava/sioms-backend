@@ -44,6 +44,21 @@ namespace SIOMS.WebAPI.Controllers
             await _cartService.UpdateCartAsync(cartItem);
             return Ok(item);
         }
+        [HttpPut("{cartItemId}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateCartItem(Guid cartItemId, [FromBody] int quantity)
+        {
+            var customerId = GetCustomerId();
+            var cartItems = await _cartService.GetCartItemsAsync(customerId);
+            var item = cartItems.FirstOrDefault(c => c.CartItemId == cartItemId);
+
+            if (item == null)
+                return NotFound("Cart item not found.");
+
+            item.Quantity = quantity;
+            await _cartService.UpdateCartAsync(item);
+            return NoContent();
+        }
 
         [HttpGet]
         public async Task<ActionResult<List<CartItem>>> GetCartItems()
