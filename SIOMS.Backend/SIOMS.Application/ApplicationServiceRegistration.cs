@@ -13,7 +13,7 @@ namespace SIOMS.Application
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ICartService, CartService>();
-
+            services.AddScoped<IUserService, UserService>();
             return services;
         }
     }
