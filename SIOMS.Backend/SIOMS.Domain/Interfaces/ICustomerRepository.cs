@@ -9,5 +9,6 @@ namespace SIOMS.Domain.Interfaces
 {
     public interface ICustomerRepository : IGenericRepository<Customer>
     {
+        Task<IEnumerable<Order>> GetCustomerOrdersAsync(Guid customerId);
     }
 }

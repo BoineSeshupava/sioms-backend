@@ -14,5 +14,6 @@ namespace SIOMS.Application.Interfaces
         Task AddCustomerAsync(CustomerDto customerDto);
         Task UpdateCustomerAsync(CustomerDto customerDto);
         Task DeleteCustomerAsync(Guid id);
+        Task<IEnumerable<OrderDto>> GetCustomerOrdersAsync(Guid customerId);
     }
 }

@@ -12,12 +12,21 @@ namespace SIOMS.Domain.Entities
     {
         [Key]
         public Guid OrderId { get; set; } = Guid.NewGuid();
+
         [Required]
         public Guid CustomerId { get; set; }
 
         [ForeignKey("CustomerId")]
         public Customer Customer { get; set; }
+
+        [Required]
+        public decimal TotalAmount { get; set; }
+
+        [Required]
         public DateTime OrderDate { get; set; }
-        public ICollection<OrderItem> OrderItems { get; set; }
+
+        public string Status { get; set; } = "Pending";
+        public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+
     }
 }

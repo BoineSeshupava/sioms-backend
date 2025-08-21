@@ -1,4 +1,5 @@
-﻿using SIOMS.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using SIOMS.Domain.Entities;
 using SIOMS.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,13 @@ namespace SIOMS.Infrastructure.Persistence.Repositories
     {
         public CustomerRepository(SIOMSDbContext context) : base(context)
         {
+        }
+
+        public async Task<IEnumerable<Order>> GetCustomerOrdersAsync(Guid customerId)
+        {
+            return await _context.Orders
+                .Where(order => order.CustomerId == customerId)
+                .ToListAsync();
         }
     }
 }

@@ -91,7 +91,6 @@ using (var scope = app.Services.CreateScope())
     context.Database.Migrate();
     SeedData.SeedDatabase(context);
 }
-// Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
 

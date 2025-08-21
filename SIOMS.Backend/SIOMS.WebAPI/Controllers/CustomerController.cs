@@ -25,13 +25,16 @@ namespace SIOMS.WebAPI.Controllers
             return Ok(customers);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        [HttpGet("{id}/orders")]
+        public async Task<IActionResult> GetCustomerOrders(Guid id)
         {
             var customer = await _customerService.GetCustomerByIdAsync(id);
             if (customer == null)
                 return NotFound();
-            return Ok(customer);
+
+            // Assuming you have a method to get orders by customer id
+            var orders = await _customerService.GetCustomerOrdersAsync(id);
+            return Ok(orders);
         }
 
         [HttpPost]

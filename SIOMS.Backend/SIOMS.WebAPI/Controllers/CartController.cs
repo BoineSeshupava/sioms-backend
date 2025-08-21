@@ -77,7 +77,7 @@ namespace SIOMS.WebAPI.Controllers
         [HttpDelete("by-product/{productId}")]
         public async Task<IActionResult> RemoveFromCartByProductId(Guid productId)
         {
-            var customerId = GetCustomerId(); // assuming such a method exists
+            var customerId = GetCustomerId();
 
             if (customerId == Guid.Empty)
                 return Unauthorized();

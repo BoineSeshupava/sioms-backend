@@ -24,13 +24,16 @@ namespace SIOMS.WebAPI.Controllers
             return Ok(categories);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(Guid id)
         {
             var category = await _categoryService.GetCategoryByIdAsync(id);
             if (category == null)
                 return NotFound();
-            return Ok(category);
+
+            await _categoryService.DeleteCategoryAsync(id);
+            return NoContent();
         }
 
         [HttpPost]

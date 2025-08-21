@@ -42,5 +42,23 @@ namespace SIOMS.WebAPI.Controllers
             await _productService.AddProductAsync(productDto);
             return Ok();
         }
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Update(Guid id, ProductDto productDto)
+        {
+            if (id != productDto.ProductId)
+                return BadRequest("Product ID mismatch.");
+
+            await _productService.UpdateProductAsync(productDto);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _productService.DeleteProductAsync(id);
+            return NoContent();
+        }
     }
 }

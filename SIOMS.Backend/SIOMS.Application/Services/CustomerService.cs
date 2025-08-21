@@ -55,5 +55,10 @@ namespace SIOMS.Application.Services
             await _customerRepository.DeleteAsync(id);
             await _unitOfWork.CommitAsync();
         }
+        public async Task<IEnumerable<OrderDto>> GetCustomerOrdersAsync(Guid customerId)
+        {
+            var orders = await _customerRepository.GetCustomerOrdersAsync(customerId);
+            return _mapper.Map<IEnumerable<OrderDto>>(orders);
+        }
     }
 }

@@ -1,11 +1,6 @@
 ﻿using AutoMapper;
 using SIOMS.Application.DTOs;
 using SIOMS.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SIOMS.Application.Profiles
 {
@@ -18,6 +13,7 @@ namespace SIOMS.Application.Profiles
             CreateMap<Product, ProductDto>().ReverseMap();
             CreateMap<Customer, CustomerDto>().ReverseMap();
             CreateMap<Order, OrderDto>().ReverseMap();
+            CreateMap<OrderItem, OrderItemDto>().ReverseMap(); // <-- Add this line
             CreateMap<Category, CategoryDto>().ReverseMap();
         }
     }

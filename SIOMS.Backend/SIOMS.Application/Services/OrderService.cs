@@ -6,7 +6,6 @@ using SIOMS.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SIOMS.Application.Services
@@ -14,12 +13,18 @@ namespace SIOMS.Application.Services
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IProductRepository _productRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRepository, IUnitOfWork unitOfWork, IMapper mapper)
+        public OrderService(
+            IOrderRepository orderRepository,
+            IProductRepository productRepository,
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
         {
             _orderRepository = orderRepository;
+            _productRepository = productRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -32,16 +37,26 @@ namespace SIOMS.Application.Services
 
         public async Task<OrderDto> GetOrderByIdAsync(Guid id)
         {
-            var order = await _orderRepository.GetByIdAsync(id);
+            var order = await _orderRepository.GetOrderWithDetailsAsync(id);
             return _mapper.Map<OrderDto>(order);
         }
 
-        public async Task<OrderDto>AddOrderAsync(OrderDto orderDto)
+        public async Task<OrderDto> AddOrderAsync(OrderDto orderDto)
         {
+            decimal total = 0;
+            foreach (var item in orderDto.OrderItems)
+            {
+                var product = await _productRepository.GetByIdAsync(item.ProductId);
+                if (product == null)
+                    throw new Exception($"Product with ID {item.ProductId} not found.");
+                total += product.Price * item.Quantity;
+            }
+            orderDto.TotalAmount = total;
+
             var order = _mapper.Map<Order>(orderDto);
             await _orderRepository.AddAsync(order);
             await _unitOfWork.CommitAsync();
-            return orderDto;
+            return _mapper.Map<OrderDto>(order);
         }
 
         public async Task UpdateOrderAsync(OrderDto orderDto)
@@ -53,7 +68,6 @@ namespace SIOMS.Application.Services
 
         public async Task DeleteOrderAsync(Guid id)
         {
-            var order = await _orderRepository.GetByIdAsync(id);
             await _orderRepository.DeleteAsync(id);
             await _unitOfWork.CommitAsync();
         }

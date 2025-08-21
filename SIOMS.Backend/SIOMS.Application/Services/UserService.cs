@@ -25,7 +25,6 @@ namespace SIOMS.Application.Services
 
             return new UserProfileDto
             {
-                Id = customer.CustomerId,
                 Name = customer.Name,
                 Email = customer.Email
             };
