@@ -13,14 +13,13 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using System.Security.Claims;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddScoped<IAuthService, AuthService>();
-var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 
+var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 builder.Services.AddSingleton(jwtSettings);
 
 builder.Services.AddAuthentication(options =>
@@ -43,13 +42,11 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddApplicationServices();
-
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
-
-
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
+
+// Swagger setup
 builder.Services.AddSwaggerGen(c =>
 {
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -76,15 +73,22 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp",
-        builder => builder.WithOrigins("http://localhost:4200")
-                          .AllowAnyMethod()
-                          .AllowAnyHeader());
+        corsBuilder => corsBuilder
+            .WithOrigins(allowedOrigins!)
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 });
+
+builder.Services.AddApplicationInsightsTelemetry();
+
 var app = builder.Build();
 
+// Run migrations and seed data
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<SIOMSDbContext>();
@@ -94,24 +98,23 @@ using (var scope = app.Services.CreateScope())
 
 app.UseHttpsRedirection();
 
-if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "SIOMS API V1");
-        c.RoutePrefix = string.Empty; // This makes Swagger available at https://localhost:5001/
-    });
-}
-app.UseExceptionHandler("/error");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "SIOMS API V1");
+    c.RoutePrefix = string.Empty;
+});
 
+app.UseExceptionHandler("/error");
 app.Map("/error", (HttpContext context) =>
 {
     return Results.Problem("Unexpected error occurred. Please contact support.");
 });
+
 app.UseCors("AllowAngularApp");
-app.UseHttpsRedirection();
+
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 app.Run();
-
