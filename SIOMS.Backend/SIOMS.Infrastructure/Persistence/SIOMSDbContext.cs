@@ -26,6 +26,9 @@ namespace SIOMS.Infrastructure.Persistence
         public DbSet<Warehouse> Warehouses { get; set; }
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<StockAlertDto> StockAlerts { get; set; }
+        public DbSet<SalesReportDto> SalesReport { get; set; }
+        public DbSet<InventoryReportDto> InventoryReport { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -41,6 +44,8 @@ namespace SIOMS.Infrastructure.Persistence
         );
 
             modelBuilder.Entity<StockAlertDto>().HasNoKey().ToView("vw_StockAlerts");
+            modelBuilder.Entity<SalesReportDto>().HasNoKey().ToView("vw_SalesReport");
+            modelBuilder.Entity<InventoryReportDto>().HasNoKey().ToView("vw_InventoryReport");
         }
     }
 }

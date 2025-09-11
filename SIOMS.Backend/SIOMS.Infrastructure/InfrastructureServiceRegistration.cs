@@ -29,7 +29,7 @@ namespace SIOMS.Infrastructure
             services.AddScoped<IVendorRepository, VendorRepository>();
             services.AddScoped<IInventoryRepository, InventoryRepository>();
             services.AddScoped<IStockAlertRepository, StockAlertRepository>();
-
+            services.AddScoped<IReportRepository, ReportRepository>();
             return services;
         }
     }

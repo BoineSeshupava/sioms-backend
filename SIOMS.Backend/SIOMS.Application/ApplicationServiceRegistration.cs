@@ -18,6 +18,7 @@ namespace SIOMS.Application
             services.AddScoped<IVendorService, VendorService>();
             services.AddScoped<IInventoryService, InventoryService>();
             services.AddScoped<IStockAlertService, StockAlertService>();
+            services.AddScoped<IReportService, ReportService>();
             return services;
         }
     }
