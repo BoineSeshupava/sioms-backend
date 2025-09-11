@@ -12,7 +12,7 @@ namespace SIOMS.Application.Interfaces
         Task<IEnumerable<OrderDto>> GetAllOrdersAsync();
         Task<OrderDto> GetOrderByIdAsync(Guid id);
         Task<OrderDto> AddOrderAsync(OrderDto orderDto);
-        Task UpdateOrderAsync(OrderDto orderDto);
+        Task<bool> UpdateOrderAsync(Guid orderId, string status);
         Task DeleteOrderAsync(Guid id);
     }
 }

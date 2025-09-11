@@ -59,11 +59,15 @@ namespace SIOMS.Application.Services
             return _mapper.Map<OrderDto>(order);
         }
 
-        public async Task UpdateOrderAsync(OrderDto orderDto)
+        public async Task<bool> UpdateOrderAsync(Guid orderId, string status)
         {
-            var order = _mapper.Map<Order>(orderDto);
-            await _orderRepository.UpdateAsync(order);
+            var order = await _orderRepository.GetByIdAsync(orderId);
+            if (order == null)
+                return false;
+            order.Status = status;
+
             await _unitOfWork.CommitAsync();
+            return true;
         }
 
         public async Task DeleteOrderAsync(Guid id)

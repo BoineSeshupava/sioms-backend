@@ -7,12 +7,7 @@ using System.Threading.Tasks;
 
 namespace SIOMS.Domain.Interfaces
 {
-    public interface IInventoryRepository
+    public interface IInventoryRepository : IGenericRepository<InventoryItem>
     {
-        Task<IEnumerable<InventoryItem>> GetAllAsync();
-        Task<InventoryItem> GetByIdAsync(int id);
-        Task AddAsync(InventoryItem item);
-        Task UpdateAsync(InventoryItem item);
-        Task DeleteAsync(int id);
     }
 }

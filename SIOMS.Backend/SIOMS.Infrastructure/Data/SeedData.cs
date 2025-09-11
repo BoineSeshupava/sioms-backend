@@ -48,6 +48,64 @@ namespace SIOMS.Infrastructure.Data
                 context.Products.AddRange(products);
                 context.SaveChanges();
             }
+
+            if (!context.Warehouses.Any())
+            {
+                var warehouses = new List<Warehouse>
+                {
+                    new() { Name = "Central Warehouse", Location = "Downtown" },
+                    new() { Name = "North Warehouse", Location = "Northside" },
+                    new() { Name = "South Warehouse", Location = "Southside" }
+                };
+
+                context.Warehouses.AddRange(warehouses);
+                context.SaveChanges();
+            }
+
+            if (!context.Vendors.Any())
+            {
+                var vendors = new List<Vendor>
+                {
+                    new() { Name = "ABC Supplies", Address = "123 Main St", ContactEmail = "contact@abcsupplies.com", Phone = 1234567890 },
+                    new() { Name = "Global Traders", Address = "456 Market Ave", ContactEmail = "info@globaltraders.com", Phone = 9876543210 },
+                    new() { Name = "Prime Distributors", Address = "789 Commerce Rd", ContactEmail = "sales@primedist.com", Phone = 5551234567 }
+                };
+
+                context.Set<Vendor>().AddRange(vendors);
+                context.SaveChanges();
+            }
+
+            // Seed InventoryItems if none exist
+            if (!context.InventoryItems.Any())
+            {
+                var products = context.Products.ToList();
+                var categories = context.Categories.ToList();
+                var warehouses = context.Warehouses.ToList();
+
+                var inventoryItems = new List<InventoryItem>();
+
+                // Assign each product to a warehouse and category for demo purposes
+                for (int i = 0; i < products.Count; i++)
+                {
+                    var product = products[i];
+                    var category = categories.FirstOrDefault(c => c.CategoryId == product.CategoryId);
+                    var warehouse = warehouses[i % warehouses.Count];
+
+                    inventoryItems.Add(new InventoryItem
+                    {
+                        InventoryItemId = Guid.NewGuid(),
+                        ItemName = product.ProductName,
+                        Quantity = product.StockQuantity,
+                        ProductId = product.ProductId,
+                        CategoryId = product.CategoryId,
+                        WarehouseId = warehouse.Id,
+                        CreatedDate = DateTime.UtcNow
+                    });
+                }
+
+                context.InventoryItems.AddRange(inventoryItems);
+                context.SaveChanges();
+            }
         }
     }
 }

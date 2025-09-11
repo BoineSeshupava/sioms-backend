@@ -10,9 +10,9 @@ namespace SIOMS.Application.Interfaces
     public interface IInventoryService
     {
         Task<IEnumerable<InventoryItemDto>> GetAllAsync();
-        Task<InventoryItemDto> GetByIdAsync(int id);
+        Task<InventoryItemDto> GetByIdAsync(Guid id);
         Task AddAsync(InventoryItemDto itemDto);
         Task UpdateAsync(InventoryItemDto itemDto);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(Guid id);
     }
 }

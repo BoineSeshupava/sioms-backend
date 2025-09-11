@@ -8,13 +8,19 @@ namespace SIOMS.Application.Profiles
     {
         public AutoMapperProfile()
         {
-            CreateMap<InventoryItem, InventoryItemDto>().ReverseMap();
+            CreateMap<InventoryItem, InventoryItemDto>()
+                .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product))
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
+                .ForMember(dest => dest.Warehouse, opt => opt.MapFrom(src => src.Warehouse))
+                .ReverseMap();
             CreateMap<Site, SiteDto>().ReverseMap();
             CreateMap<Product, ProductDto>().ReverseMap();
             CreateMap<Customer, CustomerDto>().ReverseMap();
             CreateMap<Order, OrderDto>().ReverseMap();
             CreateMap<OrderItem, OrderItemDto>().ReverseMap(); // <-- Add this line
             CreateMap<Category, CategoryDto>().ReverseMap();
+            CreateMap<Warehouse, WarehouseDto>().ReverseMap();
+            CreateMap<Vendor, VendorDto>().ReverseMap();
         }
     }
 }

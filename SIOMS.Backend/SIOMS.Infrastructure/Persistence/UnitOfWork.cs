@@ -17,12 +17,19 @@ namespace SIOMS.Infrastructure.Persistence
         public ICustomerRepository Customers { get; }
         public ICartItemRepository CartItems { get; }
 
+        public IWarehouseRepository warehouse { get; }
+        public IVendorRepository Vendors { get; }
+        public IInventoryRepository InventoryRepository { get; }
+
         public UnitOfWork(SIOMSDbContext context,
             IProductRepository products,
             ICategoryRepository categories,
             IOrderRepository orders,
             ICustomerRepository customers,
-            ICartItemRepository cartItems
+            ICartItemRepository cartItems,
+            IWarehouseRepository warehouse,
+            IVendorRepository vendors,
+            IInventoryRepository inventoryRepository
             )
         {
             _context = context;
@@ -31,6 +38,9 @@ namespace SIOMS.Infrastructure.Persistence
             Orders = orders;
             Customers = customers;
             CartItems = cartItems;
+            this.warehouse = warehouse;
+            Vendors = vendors;
+            InventoryRepository = inventoryRepository;
         }
 
         public async Task CommitAsync()

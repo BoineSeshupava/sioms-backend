@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SIOMS.SharedKernel\SIOMS.SharedKernel.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="ValueObjects\" />
   </ItemGroup>
 

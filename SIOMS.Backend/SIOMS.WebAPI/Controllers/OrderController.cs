@@ -41,7 +41,6 @@ namespace SIOMS.WebAPI.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return Guid.TryParse(userId, out var id) ? id : Guid.Empty;
         }
-
         [HttpPost]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> PlaceOrder([FromBody] OrderDto orderDto)
@@ -60,12 +59,11 @@ namespace SIOMS.WebAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateOrderStatus(Guid id, [FromBody] string status)
         {
-            var order = await _orderService.GetOrderByIdAsync(id);
-            if (order == null)
+            var updated = await _orderService.UpdateOrderAsync(id, status);
+
+            if (!updated)
                 return NotFound();
 
-            order.Status = status;
-            await _orderService.UpdateOrderAsync(order);
             return NoContent();
         }
         [HttpGet("myOrders")]
