@@ -7,13 +7,17 @@ on:
 
 env:
   DOTNET_CORE_VERSION: 8.0.x
+
+  # Azure resources
   CONTAINER_APP_NAME: sioms.webapi-container-app
   CONTAINER_APP_ENVIRONMENT_NAME: managedEnvironment-practiceazure-b2d1
   RESOURCE_GROUP: practice-azure
 
+  # Container Registry
   ACR_NAME: siomscontainerregistry
   ACR_LOGIN_SERVER: siomscontainerregistry.azurecr.io
 
+  # Image
   IMAGE_NAME: sioms-webapi
 
 jobs:
@@ -25,17 +29,17 @@ jobs:
       contents: read
 
     steps:
-    # 📥 Checkout repository
+    # 📥 Checkout source
     - name: Checkout source code
       uses: actions/checkout@v4
 
-    # 🧰 Setup .NET SDK
+    # 🧰 Setup .NET SDK (optional but safe)
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
 
-    # 🔐 Azure login using OIDC (no secrets)
+    # 🔐 Azure Login using OIDC
     - name: Azure Login (OIDC)
       uses: azure/login@v2
       with:
@@ -48,24 +52,26 @@ jobs:
       run: |
         az acr login --name ${{ env.ACR_NAME }}
 
-    # 🧪 Verify Dockerfile exists (debug safety)
-    - name: Verify Dockerfile path
+    # 🧪 Verify paths (temporary – remove after success)
+    - name: Verify repository structure
       run: |
         echo "Repo root:"
         ls -la
-        echo "SIOMS.WebAPI folder:"
-        ls -la SIOMS.WebAPI
+        echo "SIOMS.Backend:"
+        ls -la SIOMS.Backend
+        echo "SIOMS.WebAPI:"
+        ls -la SIOMS.Backend/SIOMS.WebAPI
 
     # 🐳 Build Docker image
     - name: Build Docker Image
       run: |
         docker build \
-          -f SIOMS.WebAPI/Dockerfile \
+          -f SIOMS.Backend/SIOMS.WebAPI/Dockerfile \
           -t ${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
           -t ${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:latest \
-          SIOMS.WebAPI
+          SIOMS.Backend
 
-    # 📤 Push Docker image to ACR
+    # 📤 Push Docker image
     - name: Push Docker Image
       run: |
         docker push ${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
