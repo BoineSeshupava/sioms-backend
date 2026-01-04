@@ -17,6 +17,7 @@ namespace SIOMS.Domain.Entities
         public string ProductName { get; set; }
         [Required]
         public string ProductCode { get; set; }
+        [Required]
         public string ImageUrl { get; set; }
         [Required]
         public int StockQuantity { get; set; }

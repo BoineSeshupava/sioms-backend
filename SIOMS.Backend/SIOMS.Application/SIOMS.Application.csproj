@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SIOMS.Domain\SIOMS.Domain.csproj" />
-    <ProjectReference Include="..\SIOMS.SharedKernel\SIOMS.SharedKernel.csproj" />
   </ItemGroup>
 
   <ItemGroup>
