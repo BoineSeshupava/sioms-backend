@@ -1,4 +1,4 @@
-﻿name: Build & Deploy SIOMS Web API (Container App)
+﻿name: Build & Deploy SIOMS Web API (Azure Container App)
 
 on:
   push:
@@ -10,8 +10,10 @@ env:
   CONTAINER_APP_NAME: sioms.webapi-container-app
   CONTAINER_APP_ENVIRONMENT_NAME: managedEnvironment-practiceazure-b2d1
   RESOURCE_GROUP: practice-azure
+
   ACR_NAME: siomscontainerregistry
   ACR_LOGIN_SERVER: siomscontainerregistry.azurecr.io
+
   IMAGE_NAME: sioms-webapi
 
 jobs:
@@ -23,15 +25,17 @@ jobs:
       contents: read
 
     steps:
-    - name: Checkout source
+    # 📥 Checkout repository
+    - name: Checkout source code
       uses: actions/checkout@v4
 
+    # 🧰 Setup .NET SDK
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
 
-    # 🔐 OIDC login (NO secrets)
+    # 🔐 Azure login using OIDC (no secrets)
     - name: Azure Login (OIDC)
       uses: azure/login@v2
       with:
@@ -39,27 +43,36 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    # 🔐 Login to ACR using Azure identity
+    # 🔐 Login to Azure Container Registry
     - name: Login to Azure Container Registry
       run: |
         az acr login --name ${{ env.ACR_NAME }}
 
-    # 🐳 Build Docker Image
+    # 🧪 Verify Dockerfile exists (debug safety)
+    - name: Verify Dockerfile path
+      run: |
+        echo "Repo root:"
+        ls -la
+        echo "sioms.webapi folder:"
+        ls -la sioms.webapi
+
+    # 🐳 Build Docker image
     - name: Build Docker Image
       run: |
         docker build \
+          -f sioms.webapi/Dockerfile \
           -t ${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
           -t ${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:latest \
-          .
+          sioms.webapi
 
-    # 📤 Push Docker Image
+    # 📤 Push Docker image to ACR
     - name: Push Docker Image
       run: |
         docker push ${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
         docker push ${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:latest
 
     # 🚀 Deploy to Azure Container App
-    - name: Deploy to Container App
+    - name: Deploy to Azure Container App
       run: |
         az containerapp update \
           --name ${{ env.CONTAINER_APP_NAME }} \
