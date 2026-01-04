@@ -53,17 +53,17 @@ jobs:
       run: |
         echo "Repo root:"
         ls -la
-        echo "sioms.webapi folder:"
-        ls -la sioms.webapi
+        echo "SIOMS.WebAPI folder:"
+        ls -la SIOMS.WebAPI
 
     # 🐳 Build Docker image
     - name: Build Docker Image
       run: |
         docker build \
-          -f sioms.webapi/Dockerfile \
+          -f SIOMS.WebAPI/Dockerfile \
           -t ${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
           -t ${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:latest \
-          sioms.webapi
+          SIOMS.WebAPI
 
     # 📤 Push Docker image to ACR
     - name: Push Docker Image
